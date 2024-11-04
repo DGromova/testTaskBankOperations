@@ -17,13 +17,11 @@
             <column name="id" autoIncrement="true" type="BIGINT">
                 <constraints primaryKey="true" />
             </column>
-            <column name="phone_number" type="text[]">
-                <constraints nullable="false"/>
+            <column name="login" type="varchar(20)">
+                <constraints unique="true"/>
             </column>
-            <column name="email" type="text[]">
+            <column name="password" type="varchar(60)">
                 <constraints nullable="false"/>
-            </column>
-            <column name="balance" type="money">
             </column>
             <column name="birthdate" type="date">
                 <constraints nullable="false"/>
@@ -36,12 +34,6 @@
             </column>
             <column name="middle_name" type="varchar(50)">
                 <constraints nullable="true"/>
-            </column>
-            <column name="login" type="varchar(40)">
-                <constraints unique="true"/>
-            </column>
-            <column name="password" type="varchar(40)">
-                <constraints nullable="false"/>
             </column>
         </createTable>
 

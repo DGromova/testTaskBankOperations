@@ -1,27 +1,29 @@
 package com.bank.service;
 
-import com.bank.entity.User;
+import com.bank.dto.UserDtoIn;
+import com.bank.models.User;
+import com.bank.mapper.UserMapper;
 import com.bank.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+@Slf4j
 @Service
 public class UserService {
-//    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+
+    private final UserMapper userMapper;
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserMapper userMapper, UserRepository userRepository) {
+        this.userMapper = userMapper;
         this.userRepository = userRepository;
     }
 
-    public User createUser(User user) {
-     //   LOG.info("User created");
-        return null;
+    public User createUser(UserDtoIn userDtoIn) {
+  //      log.info("User created");
+        return userRepository.save(userMapper.toEntity(userDtoIn));
     }
 
-    public List<User> allUsers() {
-        return userRepository.findAll();
-    }
+
 
 }

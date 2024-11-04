@@ -30,6 +30,9 @@
     <connection id="ec2d03ea-dd5f-4986-8516-07599ae49d76" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="ec2d03ea-dd5f-4986-8516-07599ae49d76" dataset="public.user_phones" active-filter-id="" />
+    <filter-actions connection-id="ec2d03ea-dd5f-4986-8516-07599ae49d76" dataset="public.accounts" active-filter-id="" />
+    <filter-actions connection-id="ec2d03ea-dd5f-4986-8516-07599ae49d76" dataset="public.user_emails" active-filter-id="" />
     <filter-actions connection-id="ec2d03ea-dd5f-4986-8516-07599ae49d76" dataset="public.user" active-filter-id="" />
     <filter-actions connection-id="ec2d03ea-dd5f-4986-8516-07599ae49d76" dataset="public.account" active-filter-id="" />
   </component>
