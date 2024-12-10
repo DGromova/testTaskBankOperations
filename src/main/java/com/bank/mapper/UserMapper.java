@@ -1,22 +1,18 @@
 package com.bank.mapper;
 
-import com.bank.config.WebSecurityConfig;
+import com.bank.security.WebSecurityConfig;
 import com.bank.dto.UserDtoIn;
-import com.bank.exception.EmailAlreadyExistsException;
-import com.bank.exception.LoginAlreadyExistsException;
 import com.bank.exception.PhoneAlreadyExistsException;
 import com.bank.models.Account;
 import com.bank.models.User;
 import com.bank.repository.UserRepository;
-import com.bank.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -32,14 +28,8 @@ public class UserMapper {
     }
 
     public User toEntity(UserDtoIn userDtoIn){
-
-        String login = userDtoIn.getLogin();
-        if (userRepository.existsByLogin(login)) {
-            throw new LoginAlreadyExistsException("Login " + login + " already exists");
-        }
-
         User user = new User();
-        user.setLogin(login);
+        user.setLogin(userDtoIn.getLogin());
         user.setPassword(webSecurityConfig.passwordEncoder().encode(userDtoIn.getPassword()));
 
         LocalDate birthdate = convertDateFormat(userDtoIn.getBirthdate());
@@ -50,22 +40,16 @@ public class UserMapper {
         user.setName(userDtoIn.getName());
         user.setMiddleName(userDtoIn.getMiddleName());
 
-
-        Set<String> phones = convertPhonesFormat(userDtoIn.getPhones());
-  //      if (userRepository.findByPhone(phones.stream().toString())) {
-  //          throw new PhoneAlreadyExistsException("Phone already exists");
-   //     }
-      //  checkPhones(phones);
+        Set<String> phones = new HashSet<>(convertPhonesFormat(userDtoIn.getPhones()));
+        checkPhones(phones);
         user.setPhones(phones);
 
-        Set<String> emails = new HashSet<>(userDtoIn.getEmails());
-        emails.forEach(String::toLowerCase);
-      //  checkEmails(emails);
+        Set<String> emails = userDtoIn.getEmails().stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
+        checkEmails(emails);
         user.setEmails(emails);
 
-
-
-  //      user.setEmails(new HashSet<>(userDtoIn.getEmails()));
         Account account = new Account();
         account.setUser(user);
         account.setBalance(userDtoIn.getBalance());
@@ -73,24 +57,6 @@ public class UserMapper {
 
         return user;
     }
-
-    /*private void checkPhones(Set<String> phones) throws PhoneAlreadyExistsException {
-        if (userRepository.findByPhone(phones.stream().toString())) {
-            throw new PhoneAlreadyExistsException("Phone already exists");
-        }
-    }*/
-
-  /*  private void checkEmails(Set<String> emails) throws EmailAlreadyExistsException {
-        List<String> emailsList = new ArrayList<>(emails.stream().toList());
-        List<String> allEmails = new ArrayList<>(userRepository.findAllEmails());
-        emailsList.retainAll(allEmails);
-        if (emailsList.size() == 1) {
-            throw new EmailAlreadyExistsException("Email " + emails.toArray()[0] + " already exists");
-        }
-        if (!emailsList.isEmpty()) {
-            throw new EmailAlreadyExistsException("Emails " + String.join(", ", emails) + " already exist");
-        }
-    }*/
 
     private LocalDate convertDateFormat(String inputBirthdate) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -106,18 +72,49 @@ public class UserMapper {
             throw new DateTimeException("The date of birth cannot be later than the current date");
         }
     }
+
     private Set<String> convertPhonesFormat(Set<String> phones) {
         Pattern digitPattern = Pattern.compile("\\D+");
         return phones.stream()
                 .map(p -> {
                     if (p.contains("+7")) {
-                        p.replace("+7", "8");
+                        p = p.replace("+7", "8");
                     }
                     if (!p.matches("\\D+")) {
                         p = digitPattern.matcher(p).replaceAll("");
                     }
                     return p;
                 }).collect(Collectors.toSet());
+    }
+
+    private void checkPhones(Set<String> phones) {
+        Set<String> alreadyExistPhones = new HashSet<>();
+        for (String phone : phones) {
+            if(userRepository.existsByPhones(phone)) {
+                alreadyExistPhones.add(phone);
+            }
+        }
+        if (alreadyExistPhones.size() == 1) {
+            throw new PhoneAlreadyExistsException("Phone already exists");
+        }
+        if (!alreadyExistPhones.isEmpty()) {
+            throw new PhoneAlreadyExistsException("Phones " + String.join(", ", alreadyExistPhones) + " already exist");
+        }
+    }
+
+    private void checkEmails(Set<String> emails) {
+        Set<String> alreadyExistEmails = new HashSet<>();
+        for (String email : emails) {
+            if(userRepository.existsByEmails(email)) {
+                alreadyExistEmails.add(email);
+            }
+        }
+        if (alreadyExistEmails.size() == 1) {
+            throw new PhoneAlreadyExistsException("Email already exists");
+        }
+        if (!alreadyExistEmails.isEmpty()) {
+            throw new PhoneAlreadyExistsException("Email " + String.join(", ", alreadyExistEmails) + " already exist");
+        }
     }
 
 }

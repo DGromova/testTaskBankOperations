@@ -20,8 +20,8 @@
             <column name="user_id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="emails" type="text[]">
-                <constraints nullable="false"/>
+            <column name="emails" type="text">
+                <constraints unique="true" nullable="false"/>
             </column>
         </createTable>
         <addForeignKeyConstraint constraintName="FK_EM_TO_USERS_ID"

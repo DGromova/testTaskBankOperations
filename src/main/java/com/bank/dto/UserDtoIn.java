@@ -15,8 +15,8 @@ public class UserDtoIn {
     @Pattern(regexp = "^[\\S]*$", message = "The password must not contain spaces")
     @Size(min = 8, max = 20, message = "The password must contain from 8 to 20 characters")
     private String password;
+    @NotBlank(message = "Enter birthdate")
     @Pattern(regexp = "(\\d{2})\\.(\\d{2})\\.(19|20)\\d{2}", message = "Enter the birthdate in the format dd.MM.yyyy")
-//    @Past(message = "The date of birth cannot be later than the current date")
     private String birthdate;
     @NotBlank(message = "Enter surname")
     @Size(max = 50, message = "The length of the surname should not exceed 50 characters")
@@ -31,6 +31,7 @@ public class UserDtoIn {
             message = "The phone number must start with +7 or 8. For a landline phone, enter the area code") String> phones;
     @NotEmpty(message = "Enter one or more emails")
     private Set<@Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", message = "Invalid email format") String> emails;
+    @NotNull(message = "Enter balance")
     @Digits(integer = 10, fraction = 2, message = "Enter the balance with two digits after the decimal point")
     @PositiveOrZero(message = "Balance cannot be negative")
     private BigDecimal balance;

@@ -21,6 +21,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="balance" type="NUMERIC(2)">
+                <constraints nullable="false"/>
             </column>
         </createTable>
         <addForeignKeyConstraint constraintName="FK_AC_TO_USERS_ID"

@@ -13,6 +13,7 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode
 @ToString
+@Builder
 @Table(name = "users")
 public class User {
     @Id
@@ -36,11 +37,11 @@ public class User {
 
     @ElementCollection
     @CollectionTable(name = "user_phones", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "phones", nullable = false)
+    @Column(name = "phones", nullable = false, unique = true)
     private Set<String> phones;
 
     @ElementCollection
     @CollectionTable(name = "user_emails", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "emails", nullable = false)
+    @Column(name = "emails", nullable = false, unique = true)
     private Set<String> emails;
 }

@@ -1,13 +1,12 @@
 package com.bank.handler;
 
-import com.bank.exception.EmailAlreadyExistsException;
-import com.bank.exception.LoginAlreadyExistsException;
-import com.bank.exception.NotFoundException;
-import com.bank.exception.PhoneAlreadyExistsException;
+import com.bank.exception.*;
 import com.bank.messages.ErrorMessage;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -17,7 +16,7 @@ import java.time.DateTimeException;
 @RestControllerAdvice
 public class BaseExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler({NotFoundException.class, UsernameNotFoundException.class})
     public ResponseEntity<ErrorMessage> notFoundException(NotFoundException exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity
@@ -25,8 +24,8 @@ public class BaseExceptionHandler {
                 .body(new ErrorMessage(exception.getMessage()));
     }
 
-    @ExceptionHandler(DateTimeException.class)
-    public ResponseEntity<ErrorMessage> dateTimeException(DateTimeException exception) {
+    @ExceptionHandler({DateTimeException.class, ArgumentValidationException.class})
+    public ResponseEntity<ErrorMessage> badRequestException(DateTimeException exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

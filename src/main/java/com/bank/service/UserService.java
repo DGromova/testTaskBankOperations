@@ -1,6 +1,7 @@
 package com.bank.service;
 
 import com.bank.dto.UserDtoIn;
+import com.bank.exception.LoginAlreadyExistsException;
 import com.bank.models.User;
 import com.bank.mapper.UserMapper;
 import com.bank.repository.UserRepository;
@@ -19,9 +20,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(UserDtoIn userDtoIn) {
-  //      log.info("User created");
-        return userRepository.save(userMapper.toEntity(userDtoIn));
+    public boolean createUser(UserDtoIn userDtoIn) {
+        if (userRepository.existsByLogin(userDtoIn.getLogin())) {
+            throw new LoginAlreadyExistsException("Login already exists");
+        }
+        userRepository.save(userMapper.toEntity(userDtoIn));
+        log.info("User created");
+        return true;
     }
 
 
