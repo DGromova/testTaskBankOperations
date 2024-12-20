@@ -2,7 +2,6 @@ package com.bank.handler;
 
 import com.bank.exception.*;
 import com.bank.messages.ErrorMessage;
-import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,7 @@ import java.time.DateTimeException;
 public class BaseExceptionHandler {
 
     @ExceptionHandler({NotFoundException.class, UsernameNotFoundException.class})
-    public ResponseEntity<ErrorMessage> notFoundException(NotFoundException exception) {
+    public ResponseEntity<ErrorMessage> notFoundException(Exception exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -25,7 +24,7 @@ public class BaseExceptionHandler {
     }
 
     @ExceptionHandler({DateTimeException.class, ArgumentValidationException.class})
-    public ResponseEntity<ErrorMessage> badRequestException(DateTimeException exception) {
+    public ResponseEntity<ErrorMessage> badRequestException(Exception exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

@@ -1,6 +1,6 @@
 package com.bank.mapper;
 
-import com.bank.security.WebSecurityConfig;
+import com.bank.config.WebSecurityConfig;
 import com.bank.dto.UserDtoIn;
 import com.bank.exception.PhoneAlreadyExistsException;
 import com.bank.models.Account;

@@ -3,6 +3,7 @@ package com.bank.controller;
 import com.bank.dto.UserDtoIn;
 import com.bank.exception.ArgumentValidationException;
 import com.bank.service.UserService;
+//import jakarta.mvc.binding.BindingResult;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -15,6 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
+//@Validated
 @RestController
 @RequestMapping("/bank/users")
 public class UserController {
@@ -23,6 +25,7 @@ public class UserController {
         this.userService = userService;
     }
 
+  //  @Validated
     @PostMapping("/create")
     public ResponseEntity <?> createUser(@Valid @RequestBody UserDtoIn userDtoIn, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -38,8 +41,18 @@ public class UserController {
         }
     }
 
-    //@GetMapping()
-    //public List<UserDtoOut> getAllUsers() {
+/*    @PatchMapping("/phones/add")
+    public ResponseEntity<?> addPhone(@RequestParam String phone) {
+        if (userService.addPhone(phone)) {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }*/
 
-    //}
+   /* @GetMapping("/{email}")
+    public ResponseEntity<Optional<User>> getUserByEmail(@PathVariable String email) {
+        return ResponseEntity.ok()
+                .body(userService.getUserByEmail(email));
+    }*/
 }
