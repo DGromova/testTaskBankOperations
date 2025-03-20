@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/bank/auth")
+@RequestMapping("/auth")
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;

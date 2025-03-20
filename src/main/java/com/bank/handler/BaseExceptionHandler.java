@@ -39,4 +39,12 @@ public class BaseExceptionHandler {
                 .body(new ErrorMessage(exception.getMessage()));
     }
 
+    @ExceptionHandler({DeletingLastPhoneException.class, DeletingLastEmailException.class})
+    public ResponseEntity<ErrorMessage> deletingRecentContactInformationException(Exception exception) {
+        log.error(exception.getMessage(), exception);
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new ErrorMessage(exception.getMessage()));
+    }
+
 }

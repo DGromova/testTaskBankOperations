@@ -1,0 +1,40 @@
+services:
+  client-backend:
+    image: client:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/bank_db
+    depends_on:
+      - postgres
+      - elasticsearch
+
+  postgres:
+    image: postgres:16.8-alpine3.20
+    env_file:
+      - .env
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  elasticsearch:
+    image: elasticsearch:8.17.1
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+
+volumes:
+   db-data:
+   es-data:
+
+

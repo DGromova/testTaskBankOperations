@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -51,9 +51,9 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers(HttpMethod.POST, "/bank/users/create").permitAll()
-                               .requestMatchers( "/bank/auth").permitAll()
-                               .anyRequest().authenticated()
+                        request.requestMatchers(HttpMethod.POST, "/users/create").permitAll()
+                               .requestMatchers( "/auth", "/users/delete").permitAll()
+                                .anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());
