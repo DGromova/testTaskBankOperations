@@ -1,5 +1,6 @@
-package com.bank.security;
+package com.bank.config;
 
+import com.bank.security.UserDetailsServiceImpl;
 import com.bank.security.jwt.AuthEntryPointJwt;
 import com.bank.security.jwt.AuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
-
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
@@ -50,12 +50,11 @@ public class WebSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(
-                        request -> request
-                                .requestMatchers(HttpMethod.POST, "/bank/users/create").permitAll()
-                                .requestMatchers( "/bank/auth/**").permitAll()
-                                .anyRequest().authenticated());
-             //   .httpBasic(withDefaults());
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers(HttpMethod.POST, "/users/create").permitAll()
+                               .requestMatchers( "/auth", "/users/delete").permitAll()
+                                .anyRequest().authenticated()
+                );
 
         http.authenticationProvider(authenticationProvider());
 

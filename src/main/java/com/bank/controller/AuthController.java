@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/bank/auth")
+@RequestMapping("/auth")
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -44,10 +43,11 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-        //?
+
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         return ResponseEntity
                 .ok(new JwtResponse(jwt, userDetails.getUsername()));
     }
+
 }

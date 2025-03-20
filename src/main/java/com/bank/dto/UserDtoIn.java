@@ -1,11 +1,13 @@
 package com.bank.dto;
 
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.util.Set;
 
 @Data
+@Builder
 public class UserDtoIn {
 
     @NotBlank(message = "Enter login")

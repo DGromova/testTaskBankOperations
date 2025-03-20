@@ -6,12 +6,7 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
 @Table(name = "accounts")
 public class Account {
     @Id

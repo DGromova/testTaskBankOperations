@@ -1,6 +1,6 @@
 package com.bank.mapper;
 
-import com.bank.security.WebSecurityConfig;
+import com.bank.config.WebSecurityConfig;
 import com.bank.dto.UserDtoIn;
 import com.bank.exception.PhoneAlreadyExistsException;
 import com.bank.models.Account;
@@ -36,11 +36,11 @@ public class UserMapper {
         validateBirthdate(birthdate);
         user.setBirthdate(birthdate);
 
-        user.setSurname(userDtoIn.getSurname());
-        user.setName(userDtoIn.getName());
-        user.setMiddleName(userDtoIn.getMiddleName());
+        user.setSurname(userDtoIn.getSurname().toUpperCase());
+        user.setName(userDtoIn.getName().toUpperCase());
+        user.setMiddleName(userDtoIn.getMiddleName().toUpperCase());
 
-        Set<String> phones = new HashSet<>(convertPhonesFormat(userDtoIn.getPhones()));
+        Set<String> phones = new HashSet<>(convertPhonesSetFormat(userDtoIn.getPhones()));
         checkPhones(phones);
         user.setPhones(phones);
 
@@ -73,18 +73,21 @@ public class UserMapper {
         }
     }
 
-    private Set<String> convertPhonesFormat(Set<String> phones) {
-        Pattern digitPattern = Pattern.compile("\\D+");
+    private Set<String> convertPhonesSetFormat(Set<String> phones) {
         return phones.stream()
-                .map(p -> {
-                    if (p.contains("+7")) {
-                        p = p.replace("+7", "8");
-                    }
-                    if (!p.matches("\\D+")) {
-                        p = digitPattern.matcher(p).replaceAll("");
-                    }
-                    return p;
-                }).collect(Collectors.toSet());
+                .map(this::convertPhoneFormat)
+                .collect(Collectors.toSet());
+    }
+
+    public String convertPhoneFormat(String phone) {
+        Pattern digitPattern = Pattern.compile("\\D+");
+        if (phone.contains("+7")) {
+            phone = phone.replace("+7", "8");
+        }
+        if (!phone.matches("\\D+")) {
+            phone = digitPattern.matcher(phone).replaceAll("");
+        }
+        return phone;
     }
 
     private void checkPhones(Set<String> phones) {
