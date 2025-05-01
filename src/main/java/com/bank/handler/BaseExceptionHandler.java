@@ -39,8 +39,8 @@ public class BaseExceptionHandler {
                 .body(new ErrorMessage(exception.getMessage()));
     }
 
-    @ExceptionHandler({DeletingLastPhoneException.class, DeletingLastEmailException.class})
-    public ResponseEntity<ErrorMessage> deletingRecentContactInformationException(Exception exception) {
+    @ExceptionHandler({DeletingLastPhoneException.class, DeletingLastEmailException.class, InsufficientFundsInTheAccountException.class})
+    public ResponseEntity<ErrorMessage> forbiddenException(Exception exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)

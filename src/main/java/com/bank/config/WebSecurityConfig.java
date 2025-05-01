@@ -52,7 +52,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(HttpMethod.POST, "/users/create").permitAll()
-                               .requestMatchers( "/auth", "/users/delete").permitAll()
+                               .requestMatchers( "/auth").permitAll()
                                 .anyRequest().authenticated()
                 );
 

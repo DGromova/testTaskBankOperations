@@ -2,10 +2,10 @@ package com.bank.controller;
 
 import com.bank.dto.Transaction;
 import com.bank.exception.ArgumentValidationException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import com.bank.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,7 +29,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    /*@PostMapping(("/transfer"))
+    @PostMapping(("/transfer"))
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> transfer(@Valid @RequestBody Transaction transaction, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -43,5 +43,6 @@ public class AccountController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-    }*/
+    }
+
 }

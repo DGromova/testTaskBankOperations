@@ -58,7 +58,7 @@ public class UserMapper {
         return user;
     }
 
-    private LocalDate convertDateFormat(String inputBirthdate) {
+    public LocalDate convertDateFormat(String inputBirthdate) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDate birthdate = LocalDate.parse(inputBirthdate, inputFormatter);
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

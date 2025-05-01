@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByLogin(String login);
 
-    @Modifying
+    /*@Modifying
     @Query(value = "INSERT INTO USER_PHONES (USER_ID, PHONES) VALUES(:userId, :phone)", nativeQuery = true)
     void addPhoneByUserID(@Param("userId") Integer userId, @Param("phone") String phone);
 
@@ -46,6 +46,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Query(value = "DELETE FROM USER_EMAILS WHERE EMAILS = :email", nativeQuery = true)
-    void deleteEmail(@Param("email") String email);
+    void deleteEmail(@Param("email") String email);*/
 
 }

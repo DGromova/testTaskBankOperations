@@ -1,9 +1,16 @@
 package com.bank.controller;
 
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import com.bank.dto.FilterParams;
 import com.bank.dto.UserDtoIn;
 import com.bank.exception.ArgumentValidationException;
+import com.bank.models.UserDocument;
 import com.bank.service.UserService;
+import com.bank.service.UserElasticsearchService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -16,13 +23,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("users")
 public class UserController {
     private final UserService userService;
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserElasticsearchService userElasticsearchService;
 
     @GetMapping
     public ResponseEntity<?> hello() {
@@ -104,24 +110,47 @@ public class UserController {
         }
     }
 
-       /* @GetMapping("/{email}")
-    public ResponseEntity<Optional<User>> getUserByEmail(@PathVariable String email) {
-        return ResponseEntity.ok()
-                .body(userService.getUserByEmail(email));
-    }*/
-
     @GetMapping("/find")
     @PreAuthorize("hasRole('USER')")
-    ResponseEntity<?> findUser(@RequestParam(required = false) String birthdate,
-                                            @RequestParam(required = false) String phone,
-                                            @RequestParam(required = false) String fullName,
-                                            @RequestParam(required = false) String email,
-                                            @RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size) {
-      //  if (userService.findUsers()) {
-     //   } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-      //  }
+    ResponseEntity<SearchResponse<UserDocument>> findUser(@Valid @RequestParam(required = false)
+                                              @Pattern(regexp = "(\\d{2})\\.(\\d{2})\\.(19|20)\\d{2}",
+                                                      message = "Enter the birthdate in the format dd.MM.yyyy") String birthdate,
+
+                                                          @Valid @RequestParam(required = false) @Pattern(regexp = "^(8|\\+7)[\\- ]?(\\(?\\d{3,5}\\)?[\\- ]?)?[\\d\\- ]{5,10}$",
+                                                      message = "The phone number must start with +7 or 8. For a landline phone, enter the area code") String phone,
+
+                                                          @Valid @RequestParam(required = false) @Size(max = 150, message = "Full name is too long") String fullName,
+
+                                                          @Valid @RequestParam(required = false) @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
+                                                      message = "Invalid email format") String email,
+
+                                                          @RequestParam(defaultValue = "0") int page,
+
+                                                          @RequestParam(defaultValue = "10") int size,
+
+                                                          @RequestParam(defaultValue = "id") String sortField,
+
+                                                          @RequestParam(defaultValue = "asc") String direction,
+
+                                                          BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Set<String> messages = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toSet());
+            throw new ArgumentValidationException(messages.toString());
+        }
+
+        if (birthdate == null & fullName == null & phone == null & email == null) {
+            throw new ArgumentValidationException("No parameters are set");        }
+
+        FilterParams filterParams = FilterParams.builder()
+                .birthdate(birthdate)
+                .phone(phone)
+                .fullName(fullName)
+                .email(email)
+                .build();
+
+        return ResponseEntity.ok(userElasticsearchService.findUsers(filterParams, page, size, sortField, direction));
     }
 
 }
