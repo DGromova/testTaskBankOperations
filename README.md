@@ -21,7 +21,7 @@
     - Spring Security + JWT Authentication
     - PostgreSQL
     - Spring Data JPA
-    - Elasticsearch 8.17.1 + Logstash
+    - Elasticsearch 8.17.1 
     - Maven
     - Swagger
     - Lombok
