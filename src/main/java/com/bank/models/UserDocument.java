@@ -10,6 +10,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -18,19 +19,13 @@ import java.util.Set;
 public class UserDocument {
 
     @Id
-    private Integer id;
+    private Long id;
 
     @Field(type = FieldType.Date, format = DateFormat.date)
     private LocalDate birthdate;
 
-    @Field(type = FieldType.Text/*, analyzer = "russian"*/)
-    private String surname;
-
-    @Field(type = FieldType.Text/*, analyzer = "russian"*/)
-    private String name;
-
-    @Field(type = FieldType.Text/*, analyzer = "russian"*/)
-    private String middleName;
+    @Field(type = FieldType.Text)
+    private String fullName;
 
     @Field(type = FieldType.Nested, includeInParent = true)
     private Set<String> phones;
@@ -41,9 +36,11 @@ public class UserDocument {
     public UserDocument(User user) {
         this.id = user.getId();
         this.birthdate = user.getBirthdate();
-        this.surname = user.getSurname();
-        this.name = user.getName();
-        this.middleName = user.getMiddleName();
+        this.fullName = (
+                user.getSurname() + " " +
+                user.getName() + " " +
+                Objects.toString(user.getMiddleName(), "")
+        ).stripTrailing();
         this.phones = new HashSet<>(user.getPhones());
         this.emails = new HashSet<>(user.getEmails());
     }

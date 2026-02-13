@@ -4,29 +4,30 @@ import com.bank.models.User;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<User> findById(Integer id);
-
     boolean existsByLogin(String login);
 
-    boolean existsByPhones(String phone);
+    //@Query(value = "SELECT EXISTS (SELECT u FROM USERS u JOIN u.PHONES WHERE u.PHONES = :phone)")
+    boolean existsByPhonesContains(String phone);
 
-    boolean existsByEmails(String email);
+   // @Query(value = "SELECT EXISTS (SELECT u FROM USERS u JOIN u.EMAILS WHERE u.EMAILS = :email)")
+    boolean existsByEmailsContains(String email);
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<User> findByLogin(String login);
 
-    @Modifying
+    @Query(value = "SELECT USER FROM USERS WHERE LOGIN = :login", nativeQuery = true)
+    Optional<User> findByLoginWithoutLock(@Param("login") String login);
+
+    /*@Modifying
     @Query(value = "INSERT INTO USER_PHONES (USER_ID, PHONES) VALUES(:userId, :phone)", nativeQuery = true)
     void addPhoneByUserID(@Param("userId") Integer userId, @Param("phone") String phone);
 
@@ -46,6 +47,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Query(value = "DELETE FROM USER_EMAILS WHERE EMAILS = :email", nativeQuery = true)
-    void deleteEmail(@Param("email") String email);
+    void deleteEmail(@Param("email") String email);*/
 
 }

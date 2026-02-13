@@ -32,8 +32,20 @@
 
 ## Информация по запуску:
 
-**Запуск приложения: backend части, Elasticsearch и базы данных PostgreSQL - осуществляется в терминале командой**:
+**Запуск Docker контейнера приложения: backend части, Elasticsearch и базы данных PostgreSQL - осуществляется в терминале командой**:
 
 docker-compose up --build
+
+**Для запуска с подключением локальной базы данных добавлен docker-compose.override.yml,
+предусматривающий запуск в контейнере только Elasticsearch. Запуск осуществляется командой в терминале**:
+
+docker-compose -f docker-compose.override.yml up --build
+
+**DataSource**:
+
+- URL: jdbc:postgresql://localhost:5432/bank_db
+- User: admin
+- Password: passME1jObzRW
+- Port: 5432
 
 **Приложение выполняется на локальном компьютере http://localhost:8080**
