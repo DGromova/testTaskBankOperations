@@ -1,9 +1,9 @@
 package com.bank.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class LoginRequest {
     @NotBlank(message = "Enter login")
     private String login;

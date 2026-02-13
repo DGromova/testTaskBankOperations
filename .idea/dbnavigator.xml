@@ -16,8 +16,8 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="ec2d03ea-dd5f-4986-8516-07599ae49d76">
-      <console name="bankOperations" type="STANDARD" schema="" session="Main" />
+    <connection id="461d8cfa-4aa2-4437-988c-208dda32fb4b">
+      <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
@@ -27,7 +27,7 @@
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="ec2d03ea-dd5f-4986-8516-07599ae49d76" />
+    <connection id="461d8cfa-4aa2-4437-988c-208dda32fb4b" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="ec2d03ea-dd5f-4986-8516-07599ae49d76" dataset="public.user_phones" active-filter-id="" />
@@ -36,15 +36,32 @@
     <filter-actions connection-id="ec2d03ea-dd5f-4986-8516-07599ae49d76" dataset="public.user" active-filter-id="" />
     <filter-actions connection-id="ec2d03ea-dd5f-4986-8516-07599ae49d76" dataset="public.account" active-filter-id="" />
   </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
+  </component>
+  <component name="DBNavigator.Project.MethodExecutionManager">
+    <method-browser />
+    <execution-history>
+      <group-entries value="true" />
+      <execution-inputs />
+    </execution-history>
+    <argument-values-cache />
+  </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />
   </component>
+  <component name="DBNavigator.Project.ParserDiagnosticsManager">
+    <diagnostics-history />
+  </component>
+  <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
+    <recently-used-interfaces />
+  </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="ec2d03ea-dd5f-4986-8516-07599ae49d76" active="true" signed="true">
+      <connection id="461d8cfa-4aa2-4437-988c-208dda32fb4b" active="true" signed="true">
         <database>
-          <name value="bankOperations" />
+          <name value="bank_db" />
           <description value="" />
           <database-type value="POSTGRES" />
           <config-type value="BASIC" />
@@ -55,12 +72,12 @@
           <url-type value="DATABASE" />
           <host value="localhost" />
           <port value="5432" />
-          <database value="bankOperations" />
+          <database value="bank_db" />
           <tns-folder value="" />
           <tns-profile value="" />
           <type value="USER_PASSWORD" />
-          <user value="bankUser" />
-          <deprecated-pwd value="dXNlcg==" />
+          <user value="admin" />
+          <deprecated-pwd value="cGFzc01FMWpPYnpSVw==" />
         </database>
         <properties>
           <auto-commit value="false" />
@@ -530,5 +547,9 @@
         </visibility-settings>
       </environment>
     </general-settings>
+  </component>
+  <component name="DBNavigator.Project.StatementExecutionManager">
+    <execution-variables />
+    <execution-variable-types />
   </component>
 </project>

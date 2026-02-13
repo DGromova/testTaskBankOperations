@@ -18,9 +18,12 @@
                 <constraints primaryKey="true" />
             </column>
             <column name="user_id" type="BIGINT">
-                <constraints primaryKey="true"/>
+                <constraints nullable="false" unique="true"/>
             </column>
-            <column name="balance" type="NUMERIC(2)">
+            <column name="initial_balance" type="NUMERIC(2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="current_balance" type="NUMERIC(2)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

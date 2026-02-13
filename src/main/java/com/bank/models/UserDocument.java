@@ -19,7 +19,7 @@ import java.util.Set;
 public class UserDocument {
 
     @Id
-    private Integer id;
+    private Long id;
 
     @Field(type = FieldType.Date, format = DateFormat.date)
     private LocalDate birthdate;

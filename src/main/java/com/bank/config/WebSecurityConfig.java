@@ -51,8 +51,10 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers(HttpMethod.POST, "/users/create").permitAll()
-                               .requestMatchers( "/auth").permitAll()
+                        request.requestMatchers("/users").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/users/create").permitAll()
+                                .requestMatchers("/users/**").authenticated()
+                                .requestMatchers( "/auth").permitAll()
                                 .anyRequest().authenticated()
                 );
 
